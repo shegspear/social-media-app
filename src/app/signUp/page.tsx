@@ -4,18 +4,16 @@ import {
   useState
 } from 'react'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import Link from 'next/link';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
 
 import CustomInput from "@/components/CustomInput/CustomInput"
 import CustomButton from '@/components/CustomButton/CustomButton';
+import Link from 'next/link';
 import api from '@/utils/api';
 
-
 export default function Home() {
-  const [curPage, setCurPage] = useState<string>('login')
   const [form, setForm] = useState<any>({})
   const [errors, setErrors] = useState<any>({})
   const [isVisible, setIsVisible] = useState<boolean>(false)
@@ -66,11 +64,11 @@ export default function Home() {
 
   const togglePassword = () => setIsVisible(!isVisible)
 
-  const login = async() => {
+  const register = async() => {
     setIsLoading(true)
     try {
       const {data: {message}} = await api.post(
-        '/login',
+        '/register',
         {
           username: form.email,
           password: form.password
@@ -82,8 +80,8 @@ export default function Home() {
       router.push('/home');
     }catch(err:any) {
       setIsLoading(false)
-      toast.error(`Sorry, wrong credentials.`)
-      console.log(`Login error ${err}`)
+      toast.error(`Network error.`)
+      console.log(`Register error ${err}`)
     }
   }
 
@@ -98,13 +96,13 @@ export default function Home() {
             <p 
               className="text-center text-2xl font-medium mb-10"
             >
-              Please enter correct data 😬
+              Please fix the input error 😰
             </p>
           ) : (
             <p 
               className="text-center text-2xl font-medium mb-10"
             >
-              Welcome to Instapost 😁
+              Its you again 😋
             </p>
           )
         }
@@ -153,13 +151,13 @@ export default function Home() {
 
         <CustomButton 
           disabled={isLoading}
-          onClick={login}
+          onClick={register}
           bgColor={'#8A2BE2'}
           disabledColor='grey'
           btnHeight={44}
           textColor='#fff'
           btnFontSize={20}
-          title={'login'}
+          title={'sign up'}
           loader={
             <svg className="animate-spin h-5 w-5 mr-3 border-2 border-blue-300 rounded-full" viewBox="0 0 24 24"></svg>
           }
@@ -170,16 +168,15 @@ export default function Home() {
         <p 
           className='text-md mt-8 text-grey-300'
         >
-          Don't have an account ? 
-          
+          Already have an account ? 
           <Link
-            href={'/signUp'}
+            href={'/'}
           >
-              <span
+            <span
                 className={`cursor-pointer text-signUpColor font-bold`}
-              > 
-                Sign up
-              </span>
+            > 
+                Login
+            </span>
           </Link>
         </p>
 
